@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Apprentice Demo: Balanced Input Control</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>AI Apprentice Demo</h1>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="main-content">
+            <!-- Statement of Purpose Section -->
+            <section id="statement-of-purpose" style="margin-bottom: 3rem;">
+                <p style="font-size: 1.1rem; color: var(--ey-black); line-height: 1.8; border-bottom: 1px solid var(--border-color); padding-bottom: 2rem;">
+                    The purpose of this demonstration is to illustrate how the <strong>EYRAC learning platform</strong> can be strategically updated to support voice dictation tools (such as Wispr Flow) without compromising academic integrity. By utilizing advanced browser event heuristics, the platform can continue to disable manual clipboard pasting to discourage dumping pre-written content, while simultaneously enabling hands-free input and dictation workflows. This approach significantly increases platform accessibility for all users while maintaining a high standard for original engagement.
+                </p>
+            </section>
+
+            <section id="demo">
+                <h2>Chat Learning Module</h2>
+                <div id="chat-container">
+                    <div id="chat-history" aria-live="polite">
+                        <div class="message system">Session started. Please interact with the chat to test input constraints.</div>
+                    </div>
+                    <div class="input-group">
+                        <label for="chat-input" class="sr-only">Your message</label>
+                        <textarea id="chat-input" placeholder="Type your response here..." rows="3"></textarea>
+                        <button id="send-btn">Submit</button>
+                    </div>
+                    <p class="input-note">
+                        <strong>Note:</strong> Manual clipboard paste is disabled to encourage active engagement. Voice dictation is supported.
+                    </p>
+                </div>
+            </section>
+
+            <section id="event-log-container">
+                <hr style="margin: 2rem 0; border: none; border-top: 1px solid var(--border-color);">
+                <h2>Event Inspection Log</h2>
+                <div id="event-log" aria-live="polite">
+                    <div class="log-entry system">Diagnostic logging active.</div>
+                </div>
+                <button id="clear-log">Clear Inspector</button>
+            </section>
+
+            <div class="info-grid">
+                <section id="how-to-test">
+                    <h3>Validation Steps</h3>
+                    <ol>
+                        <li>Type manually to confirm standard input.</li>
+                        <li>Attempt <strong>Ctrl+V / Cmd+V</strong> or right-click paste.</li>
+                        <li>Utilize <strong>voice dictation</strong> (e.g., Wispr Flow).</li>
+                        <li>Observe heuristic detection in the log.</li>
+                    </ol>
+                </section>
+
+                <section id="why-this-matters">
+                    <h3>Strategic Rationale</h3>
+                    <p style="font-size: 0.95rem; margin-bottom: 1rem;">This website demonstrates the ability to balance academic integrity with modern accessibility tools by targeting specific clipboard signatures rather than blocking all text insertion.</p>
+                    <p class="disclaimer">
+                        Behavioral detection varies by browser and OS.
+                    </p>
+                </section>
+            </div>
+
+            <section id="implementation-guide" class="developer-notes">
+                <h3>Technical Implementation Guide for EYRAC Platform</h3>
+                <p>To integrate this surgical input control into the existing learning platform, follow these three architectural steps:</p>
+                
+                <div class="step">
+                    <h4>1. Leverage the <code>beforeinput</code> Event</h4>
+                    <p>Unlike the standard <code>paste</code> event, <code>beforeinput</code> allows you to intercept the text <em>before</em> it hits the DOM. You can specifically target <code>insertFromPaste</code> and <code>insertFromDrop</code> without breaking standard typing.</p>
+                </div>
+
+                <div class="step">
+                    <h4>2. Implement "Signature" Heuristics</h4>
+                    <p>Most manual browser-to-browser copying includes <code>text/html</code> metadata. Most dictation and accessibility tools only provide <code>text/plain</code>. By inspecting the clipboard types during the <code>paste</code> event, you can differentiate between a student copying a solution and a student using a dictation tool.</p>
+                </div>
+
+                <div class="step">
+                    <h4>3. Protect Accessibility with <code>isComposing</code></h4>
+                    <p>Always verify the <code>isComposing</code> property. If <code>true</code>, the input is likely coming from a voice-to-text tool or an IME. These should be white-listed to maintain platform accessibility.</p>
+                </div>
+
+                <div class="code-block">
+<pre>
+// Surgical Integration Snippet
+element.addEventListener('beforeinput', (e) => {
+  const isPaste = e.inputType === 'insertFromPaste';
+  const hasRichMetadata = lastClipboardTypes.includes('text/html');
+  
+  if (isPaste && hasRichMetadata && !e.isComposing) {
+    e.preventDefault(); // Block manual paste only
+    notifyUser("Please type your response manually.");
+  }
+});
+</pre>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>This is a classroom demonstration for a Gen AI class project. It is not intended as a production anti-cheating system.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
